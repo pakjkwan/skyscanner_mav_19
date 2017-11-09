@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.sky.mapper.HSMapper">
+   <insert id="insert"></insert>
+   <select id="selectList"></select>
+   <select id="selectOne"></select>
+   <select id="countMember" resultType="string">
+      SELECT COUNT(*)AS count FROM Member;
+   </select>
+   <select id="countFlight" resultType="string">
+      SELECT COUNT(*)AS count FROM Flight;
+   </select>
+   <select id="countHotel" resultType="string">
+      SELECT COUNT(*)AS count FROM Hotel;
+   </select>
+   <select id="adminCheck" resultType="com.web.sky.member.Member"
+      parameterType="com.web.sky.command.Command">
+      select s.email
+      from(select * from Member where authority
+      =1 ) s
+      where s.email =#{search};
+   </select>
+   <select id="selectAdminEmail" resultType="string">
+      select email from Member where authority like 1;
+   </select>
+
+   <select id="selectAdminSir" resultType="string">
+      SELECT surname FROM Member where authority like 1;
+   </select>
+   <select id="selectAdminFirst" resultType="string">
+      SELECT firstname FROM Member where authority like 1;
+   </select>
+
+   <select id="selectAdminPassword" resultType="string">
+      select password from Member where authority like 1;
+   </select>
+   <select id="memberList" resultType="com.web.sky.member.Member">
+      select email,firstname as firstName,surname,country,regdate from Member ;
+   </select>
+   <select id="searchMember" resultType="com.web.sky.member.Member"
+      parameterType="com.web.sky.command.Command">
+      select email,firstname as firstName,surname,country,regdate
+      from Member
+      where email=#{search} or firstname =#{search} or surname=#{search} or
+      country=#{search};
+   </select>
+   <select id="selectPass" resultType="com.web.sky.member.Member"
+      parameterType="com.web.sky.command.Command">
+      select password
+      from Member
+      where email=#{search};
+   </select>
+   <select id="updateAdmin" resultType="com.web.sky.member.Member"
+      parameterType="com.web.sky.command.Command">
+      update Member
+      set email=#{search} ,firstname=#{column},surname=#{dir},
+      password=#{action}
+      where authority like 1;
+   </select>
+   <update id="updateMember" parameterType="com.web.sky.command.Command">
+      update Member
+      set firstname=#{action},surname=#{view},country=#{page} where
+      email=#{search} ;
+   </update>
+   <update id="updateMember1" parameterType="com.web.sky.command.Command">
+      update Member
+      set password=#{column},
+      firstname=#{action},surname=#{view},country=#{page} where
+      email=#{search} and password=#{dir} ;
+   </update>
+   <select id="newAdmin" resultType="com.web.sky.member.Member"
+      parameterType="com.web.sky.command.Command">
+      update Member set authority='1'
+      where (email= #{search} AND password = #{action});
+   </select>
+   <select id="newAdmin1" resultType="com.web.sky.member.Member"
+      parameterType="com.web.sky.command.Command">
+      update Member set authority='0' where authority='1';
+   </select>
+   <update id="update"></update>
+   <delete id="deleteMember" parameterType="com.web.sky.command.Command">
+      DELETE FROM Member WHERE
+      email = #{search}
+   </delete>
+
+</mapper>
